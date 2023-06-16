@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Chatbot UI</title>
+  <style>
+    body {
+
+
+      font-family: Arial, sans-serif;
+
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chatbot-container {
+
+      width: 100%;
+      height: 100%;
+
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background-color: lightcyan;
+      color: green;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+
+    }
+
+    .chat-header h3 {
+      margin: 0;
+      font-size: 28px;
+      font-family: -webkit-body;
+
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 10px;
+      background-image: url('static/SHER.png');
+ 
+      background-size: 34%;
+      background-color: rgba(255, 255, 255, 0.9);
+      background-attachment: fixed;
+      overflow-y: scroll;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .message {
+      margin-bottom: 36px;
+    }
+
+    .user-message {
+      padding: 8px 10px;
+      border-radius: 20px;
+      text-align: right;
+      align-self: flex-end;
+      font-size: 16px;
+      color: #333333;
+      max-width: 94%;
+      font-family: -webkit-body;
+    }
+
+    .bot-message {
+      background-color: #ffffff;
+      padding: 8px 10px;
+      border-radius: 20px;
+      text-align: left;
+      align-self: flex-start;
+      font-size: 17px;
+      color: #3334A7;
+      max-width: 80%;
+      font-family: monospace;
+    }
+
+    .chat-input {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      background-color: #ffffff;
+      border-top: 1px solid #ededed;
+    }
+
+    .chat-input input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #333333;
+      background-color: #f2f2f2;
+      margin-right: 10px;
+      outline: none;
+    }
+
+    .chat-input input[type="submit"] {
+      background-color: #128c7e;
+      color: #ffffff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      outline: none;
+    }
+
+    /* Responsive Styles */
+    @media screen and (max-width: 600px) {
+      .chat-header h3 {
+        font-size: 16px;
+      }
+
+      .chat-body {
+        padding: 10px;
+
+      }
+
+      .user-message,
+      .bot-message {
+        font-size: 12px;
+      }
+
+      .chat-input {
+        padding: 10px;
+      }
+
+      .chat-input input[type="text"] {
+        padding: 5px 8px;
+        font-size: 12px;
+      }
+
+      .chat-input input[type="submit"] {
+        padding: 5px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="chatbot-container">
+    <div class="chat-header">
+      <h3>SHER  AI  Assistant</h3>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <!-- Messages will be dynamically added here -->
+    </div>
+    <form class="chat-input" onsubmit="sendMessage(); return false;">
+      {% csrf_token %}
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <input type="submit" value="Send" />
+    </form>
+  </div>
+  <script>
+    function displayMessageWithDelay(message, sender, delay) {
+      var chatBody = document.getElementById("chat-body");
+      var messageDiv = document.createElement("div");
+      messageDiv.className = "message " + sender;
+      chatBody.appendChild(messageDiv);
+
+      var index = 0;
+
+      var displayNextCharacter = function () {
+        if (index < message.length) {
+          messageDiv.textContent += message.charAt(index);
+          index++;
+          setTimeout(displayNextCharacter, delay);
+        }
+      };
+
+      displayNextCharacter();
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function sendMessage() {
+      var userInput = document.getElementById("user-input");
+      var userMessage = userInput.value;
+      displayMessageWithDelay(userMessage, "user-message", 0); // Display user message instantly
+      userInput.value = "";
+
+      fetch('/process_input/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: 'user_input=' + encodeURIComponent(userMessage)
+      })
+        .then(response => response.json())
+        .then(data => {
+          var botMessage = data.response;
+          displayMessageWithDelay(botMessage, "bot-message", 50); // Display bot message with a delay of 50 milliseconds per character
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+
+  </script>
+</body>
+
+</html>
