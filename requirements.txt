@@ -4,7 +4,7 @@ astunparse==1.6.3
 cachetools==5.3.1
 certifi==2023.5.7
 charset-normalizer==3.1.0
-Django==3.2.19
+Django==4.2.1
 flatbuffers==23.5.26
 gast==0.4.0
 google-auth==2.19.1
@@ -13,7 +13,7 @@ google-pasta==0.2.0
 grpcio==1.54.2
 h5py==3.8.0
 idna==3.4
-jax==0.3.25
+jax==0.4.11
 keras==2.12.0
 libclang==16.0.0
 Markdown==3.4.3
