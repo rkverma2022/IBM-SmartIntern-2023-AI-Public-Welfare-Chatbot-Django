@@ -21,7 +21,7 @@ _**Instruction to clone and run the repository**_
 
       4. _Keep In mind: I have trained the model with very less data (Nearly-40 questions)._
 
-                  NLP DNN model.zip file is containig all the code and file to generate the chatbot_model.tflite and tokenizer_word_index.json file
+                  NLP DNN Model.zip file is containig all the code and file to generate the chatbot_model.tflite and tokenizer_word_index.json file
           
             
 
