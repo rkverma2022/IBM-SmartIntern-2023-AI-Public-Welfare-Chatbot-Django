@@ -198,7 +198,7 @@ _**Preparing the Data in json in Question and Answer formate.**_
                                       |
 
                                       
-**use java script to take the input and  post it on pressing submit button**
+**used java script to take the input and  post it on pressing submit button**
 
 
        i.e.
@@ -243,7 +243,7 @@ _**Preparing the Data in json in Question and Answer formate.**_
 **tokenize the input string posted from the user using  tokenizer_word_index.json**
 
 
-**pass that tokenized string to the model to predict output and finally return the json response**
+**passed that tokenized string to the model to predict output and finally return the json response**
 
 
         i.e.
