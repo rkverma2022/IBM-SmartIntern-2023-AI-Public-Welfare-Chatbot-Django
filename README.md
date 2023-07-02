@@ -163,10 +163,10 @@ _**Preparing the Data in json in Question and Answer formate.**_
                       |
 
                       
-**Ready to Deploy to with Django**
+**Ready to Deploy to Django**
 
 
-**Make a django Project and pass the both the tflite model to chatbotmodel directory, at the app level**
+**Made a django Project and pass the both the tflite model and tokenizer_word_index.json file to chatbotmodel directory, at the app level**
 
 
                       |
