@@ -1,8 +1,9 @@
-# Task-2_mercor
-# SHER_AI_Assistant
+# IBM-SmartIntern-2023-AI-Public-Welfare-Chatbot-Django
+IBM-SmartIntern-2023-AI-Public-Welfare-Chatbot using Django Framework
+
 _@owner and @author: **Rajkumar Verma**_
 
-_**SHER AI Assistant is a tool of SHER APP to help users to interact.**___
+
 
 _**Instruction to clone and run the repository**_
 
