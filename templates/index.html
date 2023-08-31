@@ -28,12 +28,13 @@
     }
 
     .chat-header {
-      background-color: lightcyan;
-      color: green;
-      padding: 16px;
+      background-color: darkblue;
+      color: white;
+      padding: 3px;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-family: ui-serif;
 
 
     }
@@ -41,14 +42,14 @@
     .chat-header h3 {
       margin: 0;
       font-size: 28px;
-      font-family: -webkit-body;
+      font-family: monospace;
 
     }
 
     .chat-body {
       flex: 1;
       padding: 10px;
-      background-image: url('static/SHER.png');
+      {% comment %} background-image: url('static/SHER.png'); {% endcomment %}
  
       background-size: 34%;
       background-color: rgba(255, 255, 255, 0.9);
@@ -152,7 +153,7 @@
 <body>
   <div class="chatbot-container">
     <div class="chat-header">
-      <h3>SHER  AI  Assistant</h3>
+      <h3>AI-based Life Assistance Chatbot Integration for public welfare</h3>
     </div>
     <div class="chat-body" id="chat-body">
       <!-- Messages will be dynamically added here -->

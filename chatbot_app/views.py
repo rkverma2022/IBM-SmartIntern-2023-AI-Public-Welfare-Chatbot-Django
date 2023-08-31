@@ -3,7 +3,43 @@ import tensorflow as tf
 import json
 import numpy as np
 from django.http import JsonResponse
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 
+
+def WQ(message):
+    try:
+        data = pd.read_csv("chatbot_app\water_dataset.csv")
+        data = data.drop(['id'], axis=1)
+        d = data
+        d = d.drop(['Potability'], axis=1)
+        maxValueForNormalization = d.max().to_numpy(dtype=float)
+
+        data = data / data.max()
+
+        data = data.to_numpy()
+        x = data[:, :-1]
+        y = data[:, -1]
+
+        # X = message
+
+        # X = np.array([X], dtype=float) / maxValueForNormalization
+        X = message / maxValueForNormalization
+        X = X.reshape(1, 9)
+
+        KNN = KNeighborsClassifier()
+        KNN.fit(x, y)
+
+        result = KNN.predict(X)
+
+        if result == 0:
+            return "Water Parameters Shows that it is not safe for drinking"
+        elif result == 1:
+            return "Water is safe ! You can drink it "
+    except FileNotFoundError:
+        return "File not found! Please check the file path."
+    except (ValueError, IndexError):
+        return "Data format issue or missing parameters."
 
 # Create your views here.
 def index(request):
@@ -71,8 +107,69 @@ def process_input(request):
             answer = "Pardon! I didn't find an answer."
 
         return answer
+    
+    def checkwq(message):
+        global wqAnswer
+        helpingSentence = ""
+        try:
+            mess = message
+            # mess = mess.split(" ")[1]
+            mess = mess.split(',')
+            mess = np.array(mess, dtype=float)
+            wqAnswer = ""
+            if mess.shape[0] == 9:
+                helpingSentence = ""
 
-    response = predict(user_input)
+                wqAnswer = WQ(mess)
+
+            elif mess.shape[0] < 9:
+                helpingSentence = "Some Parameters are Missing"
+
+            else:
+                helpingSentence = "Remove unnecessary extra values"
+
+            # print(f"{mess}  Type {type(mess)} dtype {mess.dtype} {mess.shape}")
+        except:
+            wqAnswer = "Sorry I can't Process This"
+            helpingSentence = "Thank You"
+        
+        return wqAnswer + helpingSentence
+
+   
+
+    if "predict water quality" in user_input or "predict quality of water" in user_input:
+        try:
+            user_input = str(user_input).split("{")[1].split("}")[0]
+            print(user_input)
+            response = checkwq(user_input)
+        except:
+            response = '''
+    I usually process the following 9 parameters
+    
+    
+    1. ph: pH of 1. water (0 to 14).
+    2. Hardness: Capacity of water to precipitate soap in mg/L.
+    3. Solids: Total dissolved solids in ppm.
+    4. Chloramines: Amount of Chloramines in ppm.
+    5. Sulfate: Amount of Sulfates dissolved in mg/L.
+    6. Conductivity: Electrical conductivity of water in μS/cm.
+    7. Organic_carbon: Amount of organic carbon in ppm.
+    8. Trihalomethanes: Amount of Trihalomethanes in μg/L.
+    9. Turbidity: Measure of light emiting property of water in NTU.
+    
+
+    Instructions : 
+    
+    1. Please Don't put any space, use comma to separate the parameters values
+    2. Please Provide all 9 parameters
+    
+    Ex: 
+    9,145,13168,9,310,592,8,77.2,3.8
+    
+    
+    Thank You !'''
+    else:
+        response = predict(user_input)
 
     return JsonResponse({'response': response})
 
