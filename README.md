@@ -9,8 +9,10 @@ _**Instruction to clone and run the repository**_
 
       1. clone the repository, 
 
-
-            git clone https://github.com/rkverma2022/Task-2_mercor.git
+                        For Chatbot-Django
+            https://github.com/rkverma2022/IBM-SmartIntern-2023-AI-Public-Welfare-Chatbot-Django.git 
+                        For TelegramBot
+            https://github.com/rkverma2022/IBM-SmartIntern-2023-TelegramBot.git
 
       2. install the required module
 
